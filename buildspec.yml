@@ -1,16 +1,22 @@
 version: 0.2
+
 phases:
- install:
- commands:
- - pip3 install bandit
- - apt-get update
- - apt-get install -y zip
- pre_build:
- commands:
- - bandit -r . -f txt || true
- build:
- commands:
- - zip -r function.zip .
+  install:
+    runtime-versions:
+      python: 3.10
+    commands:
+      - pip install bandit
+
+  pre_build:
+    commands:
+      - echo "Running Security Scan..."
+      - bandit -r . -f txt
+
+  build:
+    commands:
+      - echo "Packaging application..."
+      - zip -r function.zip .
+
 artifacts:
- files:
- - function.zip
+  files:
+    - function.zip
